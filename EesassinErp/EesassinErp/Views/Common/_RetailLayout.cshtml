@@ -1,0 +1,367 @@
+﻿
+@{
+    ViewBag.Version = System.Configuration.ConfigurationManager.AppSettings["version"];
+    ViewBag.Title = "Retail";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="myController">
+<!-- InstanceBegin template="/Templates/template.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+    <!-- InstanceBeginEditable name="doctitle" -->
+    <title>Retail</title>
+    <!-- InstanceEndEditable -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="favicon.png" />
+    <link href="~/compliance/css/bootstrap.css" rel="stylesheet" />
+
+    <link href="~/compliance/css/all.css" rel="stylesheet" />
+    <link href="~/compliance/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="~/compliance/css/datepicker.min.css" rel="stylesheet" />
+    <link href="~/compliance/css/custom_theme.css" rel="stylesheet" />
+    <link href="~/compliance/css/colorTheme/default.css" rel="stylesheet" />
+    <link href="~/compliance/css/draggle.css" rel="stylesheet" />
+    <link href="~/compliance/css/responsive.css" rel="stylesheet" />
+    <link href="~/compliance/css/datepicker.css" rel="stylesheet" />
+    <link href="~/Content/plugins/vendors/bower_components/sweetalert/dist/sweetalert.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="@Url.Content("~/scripts/jquery-1.12.4.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jscolor.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/myjslib/myJs.js?Ver="+ViewBag.Version+"")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/moment.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/angular.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/angular-sanitize.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/angular-filter.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/angular-ui.js")"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.5/tinymce.min.js"></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-tinymce/0.0.19/tinymce.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+    <script src="~/Content/html2canvas.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/myjslib/app.js?Ver="+ViewBag.Version+"")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/myjslib/service.js?Ver="+ViewBag.Version+"")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/myjslib/controller.js?Ver="+ViewBag.Version+"")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/myjslib/ddlBindings.js?Ver="+ViewBag.Version+"")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/myjslib/Authorization.js?Ver="+ViewBag.Version+"")"></script>
+
+
+    <script type="text/javascript" src="@Url.Content("~/scripts/jquery-1.12.4.js")"></script>
+    <link type="text/css" href="@Url.Content("~/Content/css/loader.css")" rel="stylesheet" />
+    <script src="~/scripts/managebyuser.js"></script>
+
+    @*<link href="css/jquery.dropdown.css" rel="stylesheet" />
+        <link href="css/jquery-ui.css" rel="stylesheet" />*@
+    <!-- InstanceBeginEditable name="head" -->
+    <!-- InstanceEndEditable -->
+    <style>
+        .red-validation {
+            border: 1px solid red;
+            background-color: #ffe6e6;
+        }
+
+        i.fa.fa-check-square {
+            color: #52df4a !important;
+        }
+    </style>
+    <style>
+        .header-button {
+            display: inline-block;
+            margin-top: 1rem;
+            margin-left: 3rem;
+            padding: 0.5rem 1rem;
+            background-color: #007bff; /* Change the color as desired */
+            color: #fff; /* Text color */
+            text-decoration: none; /* Remove underline from the link */
+            border-radius: 4px;
+            transition: background-color 0.3s ease; /* Add a smooth transition effect */
+        }
+
+            /* Hover effect for the button */
+            .header-button:hover {
+                background-color: #ff471a !important; /* Change the color as desired */
+            }
+
+        .red-validation {
+            border: 1px solid red;
+            background-color: #ffe6e6;
+        }
+
+        i.fa.fa-check-square {
+            color: #52df4a !important;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+</head>
+<body class="dashbg" oncontextmenu="return false;">
+    <div id="cover-spin">
+        <script>$('#cover-spin').show();</script>
+    </div>
+    <script>
+        $(document).ready(function () {
+        $('#cover-spin').hide()
+    });
+    </script>
+    <div class="contentwraper menumarginleft">
+        <header class="header menuheader-width">
+            <div class="container-fluid">
+                <div class="row cmmenu">
+                    <div class="col col-md-12">
+                        <div class="row">
+                            <div class="col">
+                                <div class="moudlename">
+                                    <div class="list-control" ng-init="SetRolePermission();LoadPageName()">
+                                        <a class="sidemenutoggle">
+                                            <span class="fa fa-ellipsis-v"></span>
+                                        </a>
+                                        <span class="pagehed">{{SectionMenuName}}</span>
+                                        <div class="menusidebar menusidebar-width">
+                                            <div class="profiletitle">
+                                                <img src="~/compliance/images/dash-logo.png" alt="" class="dash-logo" />
+                                            </div>
+                                            <div class="menuscrollwrap">
+                                                <div class="nano-content">
+                                                    <label class="profiletxt">
+                                                        <b style="font-size: 1rem;">{{Name}}</b> <br />
+                                                        <b>{{UserName}}</b> <br />
+                                                        Last Login Time : <span class="last-login-time" ng-model="LastLogin" ng-bind="LastLogin"></span>
+                                                        <span>{{LoginAs}}</span>
+                                                    </label>
+                                                    <ul class="navsidebar">
+                                                        <li ng-if="LD_ViewFlag==1"  class="nav-item" ng-class="{ 'active': SectionMenuName === 'Licence Status Dashboard' }">
+                                                            <a href="../RetailSection/LicenceStatusDashboard?Licence Status Dashboard" ng-click="updateMenu('Licence Status Dashboard')">
+                                                                <span class="icons icon-grid"></span>Licence Dashboard
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item" ng-class="{ 'active': SectionMenuName === 'Dashboard' }">
+                                                            <a href="../RetailSection/Dashboard?Dashboard" ng-click="updateMenu('Dashboard')">
+                                                                <span class="icons icon-grid"></span>Dashboard
+                                                            </a>
+                                                        </li>
+                                                        <li ng-if="SM_ViewFlag==1" class="nav-item" ng-class="{ 'active': SectionMenuName === 'Store Master' }">
+                                                            <a href="../RetailSection/StoreMaster?Store Master" ng-click="updateMenu('Store Master')">
+                                                                <span class="icons icon-home"></span>Store Master
+                                                            </a>
+                                                        </li>
+                                                        <li ng-if="CD_ViewFlag==1" class="nav-item" ng-class="{ 'active': SectionMenuName === 'ComplianceDoc' }">
+                                                            <a href="../RetailSection/ComplianceDoc?ComplianceDoc" ng-click="updateMenu('ComplianceDoc')">
+                                                                <span class="icons icon-globe"></span>Compliance Doc.
+                                                            </a>
+                                                        </li>
+                                                        <li ng-if="LM_ViewFlag==1" class="nav-item" ng-class="{ 'active': SectionMenuName === 'License Master' }">
+                                                            <a href="../RetailSection/LicenseMaster?License Master" ng-click="updateMenu('License Master')">
+                                                                <span class="icons icon-docs"></span>License Master
+                                                            </a>
+                                                        </li>
+                                                        <li ng-if="EM_ViewFlag==1" class="nav-item " ng-class="{ 'active': SectionMenuName === 'Employees Master' }">
+                                                            <a href="../RetailSection/EmployeeMaster?Employees Master" ng-click="updateMenu('Employees Master')">
+                                                                <span class="icons icon-user"></span>Employees Master
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item seprat">
+                                                            <a href="" title="Logout" ng-click="Logout();">
+                                                                <span class="icons icon-login"></span>Logout
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-md-auto">
+                                <div class="upload-btn-wrapper me-5">
+                                    <button ng-if="LoginId==1" class="btn btn-success" ng-click="GoToSupplier()">Go To Supplier</button>                                    
+                                </div>
+                                <div class="nav-item dropdown d-inline me-3" ng-init="getRetailNotification()">
+                                    <a href="#" class="micon dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-target="#notificationModal">
+                                        <span class="fas fa-bell"></span>
+                                        <span class="notifi"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" id="notification_event" aria-labelledby="navbarDropdown">
+                                        <li ng-repeat="x in RetailNotificationList">  
+                                            <a class="dropdown-item preview-item" href="#" data-bs-toggle="modal" data-bs-target="#notificationModal"   ng-click="SetRetaildetail(x.Title,x.Date,x.Remark,x.button,x.css,x.Id,x.Escalation1Remark,x.Escalation2Remark,x.Status,x.Closedby)">
+                                                <div class="preview-thumbnail">
+                                                    <img src="~/compliance/images/profile2.jpg" class="img-circle" alt="User Image">
+                                                </div>
+                                                <div class="preview-item-content">
+                                                    <p class="preview-subject font-weight-medium mb-2">{{x.Title}}</p>
+                                                    <p class="preview-subject mb-0 text-warning"><strong>{{x.Date}}</strong></p>
+                                                </div>
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                </div>
+                                
+                                @*<a href="#" class="micon me-3"><span class="fas fa-cog"></span></a>*@
+                                <a href="@Url.Action("profile","RetailSection")" class="micon">
+                                    <img id="CandidatePhoto" src="~/content/profile.png" ng-src="{{Photo}}" style="width: 30px;height:30px; " />
+                          </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- InstanceBeginEditable name="Content Area" -->
+        <div id="cover-spin">
+            <script>$('#cover-spin').show();</script>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#cover-spin').hide()
+            });
+        </script>
+        @RenderBody()
+    </div>
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content notiModal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Notification</h5>
+                    <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close">✖</button>
+                </div>
+                <div class="modal-body">
+                    <h4>Title : {{Title}}</h4>
+                    <p class="mb-5">Remark: {{Remark}}</p>
+                    <p class="mb-5">{{Escalation1Remark}}</p>
+                    <p class="mb-5">{{Escalation2Remark}}</p>
+              
+                  
+                    <div ng-hide="Status==2">
+                        <p style="display:{{css}}"><textarea id="remark" ng-model="Aremark" style="width:100%"></textarea></p>
+                        <button style="margin-left: 80%;" data-bs-dismiss="modal" class="btn btn-outline-light" ng-click="ApproveClose(css,Id)">{{button}}</button> 
+                    </div>
+                      <p>{{Date}}</p>
+                    <p>{{Closedby}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<script type="text/javascript" src="~/compliance/js/mock.js"></script>*@
+    @*<script type="text/javascript" src="~/compliance/js/jquery-min.js"></script>*@
+    <script type="text/javascript" src="~/compliance/js/bootstrap.js"></script>
+    <script type="text/javascript" src="~/compliance/js/jquery.nanoscroller.min.js"></script>
+    <script type="text/javascript" src="~/compliance/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/compliance/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" src="~/compliance/js/datepicker.js"></script>
+    <script type="text/javascript" src="~/compliance/js/datepicker.en.js"></script>
+    <script type="text/javascript" src="~/compliance/js/builder.js"></script>
+    <script type="text/javascript" src="~/compliance/js/beautifyhtml.js"></script>
+    <script type="text/javascript" src="~/compliance/js/dragble.js"></script>
+    <script type="text/javascript" src="~/compliance/js/jquery.dropdown.js"></script>
+    <script type="text/javascript" src="~/compliance/js/theme-script.js"></script>
+    <script type="text/javascript" src="~/compliance/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="~/compliance/js/datepicker.js"></script>
+    <script type="text/javascript" src="~/compliance/js/chart.bundle.js"></script>
+    <script type="text/javascript" src="~/compliance/js/chartjs-gauge.js"></script>
+
+    <script src="~/Content/plugins/vendors/bower_components/sweetalert/dist/sweetalert.js"></script>
+
+    <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
+    <script src="~/scripts/myjslib/customDirectives.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.22.5/select.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.22.5/select.css">
+    <!-- InstanceBeginEditable name="for-javascript" -->
+    <!-- InstanceEndEditable -->
+
+    <script>
+        function LogoutRetail() {
+            @*sessionStorage.setItem('userid', "-1");
+            window.location.href = '@Url.Action("Login", "Login")';*@
+            Bindgra();
+        }
+
+    </script>
+    <script>
+        function Bindgra(Totalupoad,PerCentage) {
+
+            var randomScalingFactor = function () {
+                return Totalupoad;
+            };
+
+            var randomData = function () {
+                return [
+                  Totalupoad, 100
+                ];
+            };
+
+            var randomValue = function (data) {
+                return PerCentage;
+            };
+
+            var data = randomData();
+            var value = randomValue(data);
+
+            var config = {
+                type: "gauge",
+                data: {
+                    //labels: ['Success', 'Warning', 'Warning', 'Error'],
+                    datasets: [
+                        {
+                            data: data,
+                            value: value,
+                            backgroundColor: ["#b5e5fc", "#56a3f6"],
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: "Gauge chart"
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 10
+                        }
+                    },
+                    needle: {
+                        // Needle circle radius as the percentage of the chart area width
+                        radiusPercentage: 2,
+                        // Needle width as the percentage of the chart area width
+                        widthPercentage: 3.2,
+                        // Needle length as the percentage of the interval between inner radius (0%) and outer radius (100%) of the arc
+                        lengthPercentage: 80,
+                        // The color of the needle
+                        color: "rgba(0, 0, 0, 1)"
+                    },
+                    valueLabel: {
+                        formatter: Math.round
+                    }
+                }
+            };
+
+            var ctx = document.getElementById("chart").getContext("2d");
+            window.myGauge = new Chart(ctx, config);
+        }
+
+
+
+    </script>
+</body>
+<!-- InstanceEnd -->
+</html>
